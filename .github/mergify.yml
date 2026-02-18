@@ -1,0 +1,30 @@
+pull_request_rules:
+  - name: Automatic merge
+    conditions:
+      - "#approved-reviews-by>=1"
+      - "#review-requested=0"
+      - "#changes-requested-reviews-by=0"
+    actions:
+      merge:
+        method: squash
+  - name: Automatic merge for dependabot
+    conditions:
+      - author~=^dependabot\[bot\]$
+      - or:
+        - files~=^\.github/workflows/.*\.ya?ml$
+      - -files~=^(?!\.github/workflows/.*\.ya?ml$).*
+    actions:
+      review:
+        type: APPROVE
+      merge:
+        method: squash
+  - name: Automatic merge for pre-commit
+    conditions:
+      - author~=^pre-commit-ci\[bot\]$
+      - title~=^\[pre-commit\.ci\] pre-commit autoupdate$
+      - files~=^\.pre-commit-config\.yaml$
+    actions:
+      review:
+        type: APPROVE
+      merge:
+        method: squash

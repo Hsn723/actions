@@ -1,0 +1,32 @@
+name: Release Helm chart
+on:
+  workflow_call
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      # TODO: Remove once https://github.com/helm/chart-releaser/pull/587 is merged and released
+      - uses: actions/setup-go@v6
+      - name: Build interim chart-releaser
+        run: |
+          curl -sSL -o chart-releaser.tar.gz "https://github.com/helm/chart-releaser/archive/refs/tags/v1.8.1.tar.gz"
+          tar -xzf chart-releaser.tar.gz
+          cd chart-releaser-1.8.1
+          curl -sSL -o de894ed.patch "https://github.com/chrisburr/chart-releaser/commit/de894ed8f6e7c0678eb71445d48b215ea167823b.patch"
+          curl -sSL -o 7a93a55.patch "https://github.com/chrisburr/chart-releaser/commit/7a93a55f636493c7a39d7b57fbd650ee95bfa233.patch"
+          patch -p1 < de894ed.patch
+          patch -p1 < 7a93a55.patch
+          go build -o ${{ runner.tool_cache }}/cr/patched/cr ./cr
+          chmod +x ${{ runner.tool_cache }}/cr/patched/cr
+      # End TODO
+      - name: Run chart-releaser
+        uses: helm/chart-releaser-action@v1.7.0
+        with:
+          mark_as_latest: false
+          skip_existing: true
+          install_dir: ${{ runner.tool_cache }}/cr/patched # TODO: Remove once https://github.com/helm/chart-releaser/pull/587 is merged and released
+        env:
+          CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          CR_RELEASE_NAME_TEMPLATE: "helm-v{{ .Version }}"
