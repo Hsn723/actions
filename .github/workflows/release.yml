@@ -2,6 +2,11 @@ name: release
 on:
   workflow_call:
     inputs:
+      additional-setup:
+        description: "Additional setup commands to run before release (e.g. setting up extra tools)"
+        required: false
+        type: string
+        default: ""
       attest-checksums:
         description: "Whether to attest checksums"
         required: false
@@ -75,6 +80,12 @@ jobs:
         uses: actions/setup-go@v6
         with:
           go-version: stable
+      - name: Additional setup
+        if: ${{ inputs.additional-setup != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.additional-setup }}
+        shell: bash
       - name: GoReleaser
         uses: goreleaser/goreleaser-action@v6
         with:
