@@ -1,12 +1,33 @@
 name: Release Helm chart
 on:
-  workflow_call
+  workflow_call:
+    inputs:
+      extra_helm_setup:
+        required: false
+        type: string
+        default: ""
 permissions:
   contents: write
 jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+            git config user.name "$GITHUB_ACTOR"
+            git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+      - name: Extra Helm setup
+        if: ${{ inputs.extra_helm_setup != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.extra_helm_setup }}
+        shell: bash
       # TODO: Remove once https://github.com/helm/chart-releaser/pull/587 is merged and released
       - uses: actions/setup-go@v6
       - name: Build interim chart-releaser
