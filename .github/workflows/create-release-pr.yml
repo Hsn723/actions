@@ -33,6 +33,8 @@ jobs:
           fi
       - name: Create release PR
         if: steps.tag.outputs.create-pr == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           MAJOR="${{ needs.version.outputs.major }}"
           MINOR="${{ needs.version.outputs.minor }}"
