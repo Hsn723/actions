@@ -1,0 +1,54 @@
+name: Update tags
+on:
+  workflow_call:
+    inputs:
+      update_major_tag:
+        description: "Whether to update the major version tag (e.g. v1)"
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      tag_updated:
+        description: "Whether a new tag was created or an existing tag was updated"
+        value: ${{ jobs.update-tags.outputs.tag_updated }}
+  push:
+    branches:
+      - master
+permissions:
+  contents: write
+jobs:
+  version:
+    uses: ./.github/workflows/read-version.yml
+  update-tags:
+    runs-on: ubuntu-latest
+    needs: version
+    outputs:
+      tag_updated: ${{ steps.update-tags.outputs.tag_updated }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Configure Git
+        run: |
+            git config user.name "$GITHUB_ACTOR"
+            git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+      - name: Check if tag exists
+        id: tag
+        run: |
+          TAG="${{ needs.version.outputs.version }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "update-tags=false" >> $GITHUB_OUTPUT
+          else
+            echo "update-tags=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Update tags
+        if: steps.tag.outputs.update-tags == 'true'
+        run: |
+          TAG="${{ needs.version.outputs.version }}"
+          git tag "$TAG"
+          if [ "${{ inputs.update_major_tag }}" = "true" ]; then
+            git tag -f "v${{ needs.version.outputs.major }}"
+          fi
+          git push origin --tags --force
+          echo "tag_updated=true" >> $GITHUB_OUTPUT
