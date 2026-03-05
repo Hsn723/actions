@@ -42,6 +42,10 @@ jobs:
           NEXT_PATCH=$((PATCH + 1))
           NEXT_VERSION="${MAJOR}.${MINOR}.${NEXT_PATCH}"
           BRANCH="release-v${NEXT_VERSION}"
+          if git rev-parse --verify "origin/${BRANCH}" >/dev/null 2>&1; then
+            echo "Branch ${BRANCH} already exists, skipping PR creation"
+            exit 0
+          fi
           git checkout -b "${BRANCH}"
           echo "${NEXT_VERSION}" > VERSION
           git add VERSION
