@@ -10,6 +10,9 @@ on:
       version:
         description: "The version read from the specified file"
         value: ${{ jobs.read-version.outputs.version }}
+      version-tag:
+        description: "The version prefixed with 'v' (e.g. v1.2.3)"
+        value: "v${{ jobs.read-version.outputs.version }}"
       major:
         description: "The major version component"
         value: ${{ jobs.read-version.outputs.major }}
@@ -43,8 +46,8 @@ jobs:
             exit 1
           fi
           VERSION=$(cat "$VERSION_FILE")
-          if [[ ! "$VERSION" =~ ^v?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-            echo "VERSION file does not contain a valid semantic version (e.g. 1.2.3 or v1.2.3): $VERSION"
+          if [[ ! "$VERSION" =~ ^?[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "VERSION file does not contain a valid version (e.g. 1.2.3): $VERSION"
             exit 1
           fi
           VERSION="${VERSION}"
