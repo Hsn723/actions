@@ -6,7 +6,7 @@ on:
         description: "Whether to update the major version tag (e.g. v1)"
         required: false
         type: boolean
-        default: true
+        default: false
     outputs:
       tag_updated:
         description: "Whether a new tag was created or an existing tag was updated"
@@ -43,8 +43,11 @@ jobs:
             exit 0
           fi
           git tag "$TAG"
-          if [ "${{ inputs.update_major_tag }}" = "true" ]; then
-            git tag -f "v${{ needs.version.outputs.major }}"
-          fi
+      - name: Update major tag
+        if: ${{ github.event_name != 'workflow_call' || inputs.update_major_tag }}
+        run: |
+          git tag -f "v${{ needs.version.outputs.major }}"
+      - name: Push tags
+        run: |
           git push origin --tags --force
           echo "tag_updated=true" >> $GITHUB_OUTPUT
