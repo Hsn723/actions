@@ -25,7 +25,7 @@ jobs:
       - name: Check if tag exists
         id: tag
         run: |
-          TAG="${{ needs.version.outputs.version }}"
+          TAG="${{ needs.version.outputs.version-tag }}"
           if git rev-parse "$TAG" >/dev/null 2>&1; then
             echo "create-pr=true" >> $GITHUB_OUTPUT
           else
@@ -43,6 +43,6 @@ jobs:
           git checkout -b "${BRANCH}"
           echo "${NEXT_VERSION}" > VERSION
           git add VERSION
-          git commit -m "Bump version from ${{ steps.version.outputs.VERSION }} to v${NEXT_VERSION}"
+          git commit -m "Bump version from ${{ steps.version.outputs.version-tag }} to v${NEXT_VERSION}"
           git push origin "${BRANCH}"
-          gh pr create --title "Release v${{ steps.version.outputs.VERSION }}" --body "This PR prepares the next release by bumping VERSION to v${NEXT_VERSION}."
+          gh pr create --title "Release v${NEXT_VERSION}" --body "This PR prepares the next release by bumping VERSION to v${NEXT_VERSION}."

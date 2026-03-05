@@ -6,7 +6,7 @@ on:
         description: "Whether to update the major version tag (e.g. v1)"
         required: false
         type: boolean
-        default: false
+        default: true
     outputs:
       tag_updated:
         description: "Whether a new tag was created or an existing tag was updated"
@@ -14,6 +14,8 @@ on:
   push:
     branches:
       - master
+    paths:
+      - VERSION
 permissions:
   contents: write
 jobs:
@@ -33,19 +35,13 @@ jobs:
         run: |
             git config user.name "$GITHUB_ACTOR"
             git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - name: Check if tag exists
-        id: tag
-        run: |
-          TAG="${{ needs.version.outputs.version }}"
-          if git rev-parse "$TAG" >/dev/null 2>&1; then
-            echo "update-tags=false" >> $GITHUB_OUTPUT
-          else
-            echo "update-tags=true" >> $GITHUB_OUTPUT
-          fi
       - name: Update tags
-        if: steps.tag.outputs.update-tags == 'true'
         run: |
-          TAG="${{ needs.version.outputs.version }}"
+          TAG="${{ needs.version.outputs.version-tag }}"
+          if git rev-parse "$TAG" >/dev/null 2>&1; then
+            echo "Tag $TAG already exists, skipping tag creation"
+            exit 0
+          fi
           git tag "$TAG"
           if [ "${{ inputs.update_major_tag }}" = "true" ]; then
             git tag -f "v${{ needs.version.outputs.major }}"
