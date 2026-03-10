@@ -13,7 +13,7 @@ pull_request_rules:
       - or:
         - files~=^\.github/workflows/.*\.ya?ml$
       - -files~=^(?!\.github/workflows/.*\.ya?ml$).*
-      - updated-at >= 3 days ago
+      - updated-at < 3 days ago
     actions:
       review:
         type: APPROVE
@@ -24,7 +24,7 @@ pull_request_rules:
       - author~=^pre-commit-ci\[bot\]$
       - title~=^\[pre-commit\.ci\] pre-commit autoupdate$
       - files~=^\.pre-commit-config\.yaml$
-      - updated-at >= 3 days ago
+      - updated-at < 3 days ago
     actions:
       review:
         type: APPROVE
