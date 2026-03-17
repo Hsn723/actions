@@ -54,5 +54,5 @@ jobs:
           git push origin "${BRANCH}"
           gh pr create --title "Release v${NEXT_VERSION}" --body "This PR prepares the next release by bumping VERSION to v${NEXT_VERSION}.
 
-          Changes since v${{ needs.version.outputs.version-tag }}:
+          Changes since ${{ needs.version.outputs.version-tag }}:
           https://github.com/${{ github.repository }}/compare/${{ needs.version.outputs.version-tag }}...master"
