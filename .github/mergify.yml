@@ -13,7 +13,6 @@ pull_request_rules:
       - or:
         - files~=^\.github/workflows/.*\.ya?ml$
       - -files~=^(?!\.github/workflows/.*\.ya?ml$).*
-      - updated-at < 3 days ago
     actions:
       review:
         type: APPROVE
