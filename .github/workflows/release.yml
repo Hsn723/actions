@@ -17,6 +17,11 @@ on:
         required: false
         type: boolean
         default: true
+      upload-image-sbom:
+        description: "Whether to generate and upload SBOM for container images"
+        required: false
+        type: boolean
+        default: true
 permissions:
   contents: write
   id-token: write
@@ -103,3 +108,15 @@ jobs:
         uses: actions/attest@v4
         with:
           subject-checksums: ./dist/digests.txt
+      - name: Install syft
+        if: ${{ inputs.upload-image-sbom }}
+        uses: anchore/sbom-action/download-syft@v0.24.0
+      - name: Generate and attach container image SBOM
+        if: ${{ inputs.upload-image-sbom }}
+        run: |
+          IMAGES=$(jq -r '.[] | select(.type == "Docker Image") | .name' dist/artifacts.json)
+          for IMAGE in ${IMAGES}; do
+            SBOM_FILE="dist/sbom-$(echo ${IMAGE} | tr '/:' '_').json"
+            syft "${IMAGE}" -o spdx-json > "${SBOM_FILE}"
+            cosign attach sbom --sbom "${SBOM_FILE}" --name "${IMAGE}"
+          done
