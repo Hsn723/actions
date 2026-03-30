@@ -111,12 +111,17 @@ jobs:
       - name: Install syft
         if: ${{ inputs.upload-image-sbom }}
         uses: anchore/sbom-action/download-syft@v0.24.0
+      - name: Install oras
+        if: ${{ inputs.upload-image-sbom }}
+        run: go install oras.land/oras/cmd/oras@latest
       - name: Generate and attach container image SBOM
         if: ${{ inputs.upload-image-sbom }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           IMAGES=$(jq -r '.[] | select(.type == "Docker Image") | .name' dist/artifacts.json)
           for IMAGE in ${IMAGES}; do
             SBOM_FILE="dist/sbom-$(echo ${IMAGE} | tr '/:' '_').json"
             syft "${IMAGE}" -o spdx-json > "${SBOM_FILE}"
-            cosign attach sbom --sbom "${SBOM_FILE}" --name "${IMAGE}"
+            oras attach --artifact-type application/spdx+json "${IMAGE}" "${SBOM_FILE}:application/spdx+json"
           done
