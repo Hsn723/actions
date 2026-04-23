@@ -60,6 +60,9 @@ jobs:
           git push origin --tags --force
           echo "tag_updated=true" >> $GITHUB_OUTPUT
   create-release-pr:
+    permissions:
+      contents: write
+      pull-requests: write
     if: ${{ github.event_name == 'workflow_call' && inputs.create_release_pr }} && needs.update-tags.outputs.tag_updated == 'true'
     needs: update-tags
     uses: ./.github/workflows/create-release-pr.yml
