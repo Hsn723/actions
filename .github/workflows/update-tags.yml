@@ -23,6 +23,9 @@ on:
       - VERSION
 permissions:
   contents: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
 jobs:
   version:
     uses: ./.github/workflows/read-version.yml

@@ -27,6 +27,9 @@ permissions:
   id-token: write
   packages: write
   attestations: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
 jobs:
   tag:
     runs-on: ubuntu-latest

@@ -8,6 +8,9 @@ on:
         default: ""
 permissions:
   contents: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
 jobs:
   release:
     runs-on: ubuntu-latest

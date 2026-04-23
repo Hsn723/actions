@@ -24,6 +24,9 @@ on:
         value: ${{ jobs.read-version.outputs.patch }}
 permissions:
   contents: read
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
 jobs:
   read-version:
     runs-on: ubuntu-latest
