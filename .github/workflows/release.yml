@@ -95,7 +95,7 @@ jobs:
           ${{ inputs.additional-setup }}
         shell: bash
       - name: GoReleaser
-        uses: goreleaser/goreleaser-action@v7
+        uses: goreleaser/goreleaser-action@v7.1.0
         with:
           version: latest
           args: release --clean
