@@ -97,14 +97,16 @@ jobs:
           fi
       - name: Package chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        id: package
         run: |
           mkdir -p ${{ inputs.artifact_directory }}
           helm package charts/${{ inputs.chart_name }} -d ${{ inputs.artifact_directory }}
+          echo "chart_file=${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}.tgz" >> $GITHUB_OUTPUT
       - name: Push chart to GHCR
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
           OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          helm push ${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/${OWNER}/charts
+          helm push ${{ steps.package.outputs.chart_file }} oci://ghcr.io/${OWNER}/charts
       - name: Install cosign
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         uses: sigstore/cosign-installer@v4.1.2
@@ -114,6 +116,13 @@ jobs:
       - name: Install oras
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: go install oras.land/oras/cmd/oras@latest
+      - name: Login to GHCR
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Sign chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
@@ -123,7 +132,7 @@ jobs:
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
           SBOM_FILE="${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}-sbom.spdx.json"
-          syft ${{ steps.check_release.outputs.chart_uri }} \
+          syft ${{ steps.package.outputs.chart_file }} \
             -o spdx-json > "$SBOM_FILE"
           echo "sbom_file=$SBOM_FILE" >> $GITHUB_OUTPUT
       - name: Attach SBOM
