@@ -114,6 +114,13 @@ jobs:
       - name: Install oras
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: go install oras.land/oras/cmd/oras@latest
+      - name: Login to GHCR
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Sign chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
