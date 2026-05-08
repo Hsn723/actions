@@ -85,12 +85,15 @@ jobs:
         id: check_release
         if: ${{ inputs.upload_as_oci == true && inputs.chart_name != '' }}
         run: |
-          if helm show chart oci://ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }} --version "${{ steps.version.outputs.version }}"> /dev/null 2>&1; then
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          CHART_PATH="ghcr.io/${OWNER}/charts/${{ inputs.chart_name }}"
+          if helm show chart oci://${CHART_PATH} --version "${{ steps.version.outputs.version }}"> /dev/null 2>&1; then
             echo "Chart version ${VERSION} already exists, skipping release"
             echo "release=false" >> $GITHUB_OUTPUT
           else
             echo "Chart version ${VERSION} does not exist, proceeding with release"
             echo "release=true" >> $GITHUB_OUTPUT
+            echo "chart_uri=${CHART_PATH}:${{ steps.version.outputs.version }}" >> $GITHUB_OUTPUT
           fi
       - name: Package chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
@@ -100,7 +103,8 @@ jobs:
       - name: Push chart to GHCR
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
-          helm push ${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
+          OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          helm push ${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/${OWNER}/charts
       - name: Install cosign
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         uses: sigstore/cosign-installer@v4.1.2
@@ -113,24 +117,24 @@ jobs:
       - name: Sign chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
-          cosign sign --yes ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }}
+          cosign sign --yes ${{ steps.check_release.outputs.chart_uri }}
       - name: Generate SBOM
         id: generate_sbom
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
           SBOM_FILE="${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}-sbom.spdx.json"
-          syft ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }} \
+          syft ${{ steps.check_release.outputs.chart_uri }} \
             -o spdx-json > "$SBOM_FILE"
           echo "sbom_file=$SBOM_FILE" >> $GITHUB_OUTPUT
       - name: Attach SBOM
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
           oras attach --artifact-type application/spdx+json \
-            ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }} \
+            ${{ steps.check_release.outputs.chart_uri }} \
             "${{ steps.generate_sbom.outputs.sbom_file }}:application/spdx+json"
       - name: Sign SBOM attestation
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
           cosign attest --yes --predicate "${{ steps.generate_sbom.outputs.sbom_file }}" \
             --type spdx \
-            ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }}
+            ${{ steps.check_release.outputs.chart_uri }}
