@@ -6,8 +6,23 @@ on:
         required: false
         type: string
         default: ""
+      upload_as_oci:
+        required: false
+        type: boolean
+        default: false
+      chart_name:
+        required: false
+        type: string
+        default: ""
+      artifact_directory:
+        required: false
+        type: string
+        default: "dist"
 permissions:
   contents: write
+  packages: write
+  id-token: write
+  attestations: write
 env:
   GH_TELEMETRY: false
   DO_NOT_TRACK: true
@@ -33,7 +48,9 @@ jobs:
         shell: bash
       # TODO: Remove once https://github.com/helm/chart-releaser/pull/587 is merged and released
       - uses: actions/setup-go@v6
+        if: ${{ inputs.upload_as_oci == false }}
       - name: Build interim chart-releaser
+        if: ${{ inputs.upload_as_oci == false }}
         run: |
           curl -sSL -o chart-releaser.tar.gz "https://github.com/helm/chart-releaser/archive/refs/tags/v1.8.1.tar.gz"
           tar -xzf chart-releaser.tar.gz
@@ -46,6 +63,7 @@ jobs:
           chmod +x ${{ runner.tool_cache }}/cr/patched/cr
       # End TODO
       - name: Run chart-releaser
+        if: ${{ inputs.upload_as_oci == false }}
         uses: helm/chart-releaser-action@v1.7.0
         with:
           mark_as_latest: false
@@ -54,3 +72,64 @@ jobs:
         env:
           CR_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           CR_RELEASE_NAME_TEMPLATE: "helm-v{{ .Version }}"
+      - name: Retrieve chart version
+        id: version
+        if: ${{ inputs.upload_as_oci == true && inputs.chart_name != '' }}
+        run: |
+          VERSION=$(yq '.version' charts/${{ inputs.chart_name }}/Chart.yaml)
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+      - name: Login to GHCR
+        if: ${{ inputs.upload_as_oci == true && inputs.chart_name != '' }}
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Check for release necessity
+        id: check_release
+        if: ${{ inputs.upload_as_oci == true && inputs.chart_name != '' }}
+        run: |
+          if helm show chart oci://ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }} --version "${{ steps.version.outputs.version }}"> /dev/null 2>&1; then
+            echo "Chart version ${VERSION} already exists, skipping release"
+            echo "release=false" >> $GITHUB_OUTPUT
+          else
+            echo "Chart version ${VERSION} does not exist, proceeding with release"
+            echo "release=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Package chart
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          helm package charts/${{ inputs.chart_name }} -d ${{ inputs.artifact_directory }}
+      - name: Push chart to GHCR
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          helm push ${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}.tgz oci://ghcr.io/${{ github.repository_owner }}/charts
+      - name: Install cosign
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        uses: sigstore/cosign-installer@v4.1.2
+      - name: Install syft
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        uses: anchore/sbom-action/download-syft@v0.24.0
+      - name: Install oras
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: go install oras.land/oras/cmd/oras@latest
+      - name: Sign chart
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          cosign sign --yes ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }}
+      - name: Generate SBOM
+        id: generate_sbom
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          SBOM_FILE="${{ inputs.artifact_directory }}/${{ inputs.chart_name }}-${{ steps.version.outputs.version }}-sbom.spdx.json"
+          syft ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }} \
+            -o spdx-json > "$SBOM_FILE"
+          echo "sbom_file=$SBOM_FILE" >> $GITHUB_OUTPUT
+      - name: Attach SBOM
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          oras attach --artifact-type application/spdx+json \
+            ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }} \
+            "${{ steps.generate_sbom.outputs.sbom_file }}:application/spdx+json"
+      - name: Sign SBOM attestation
+        if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
+        run: |
+          cosign attest --yes --predicate "${{ steps.generate_sbom.outputs.sbom_file }}" \
+            --type spdx \
+            ghcr.io/${{ github.repository_owner }}/charts/${{ inputs.chart_name }}:${{ steps.version.outputs.version }}
