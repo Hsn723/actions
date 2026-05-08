@@ -95,6 +95,7 @@ jobs:
       - name: Package chart
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
         run: |
+          mkdir -p ${{ inputs.artifact_directory }}
           helm package charts/${{ inputs.chart_name }} -d ${{ inputs.artifact_directory }}
       - name: Push chart to GHCR
         if: ${{ inputs.upload_as_oci == true && steps.check_release.outputs.release == 'true' }}
