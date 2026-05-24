@@ -34,7 +34,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           fetch-depth: 0
       - name: Configure Git
@@ -42,14 +42,14 @@ jobs:
             git config user.name "$GITHUB_ACTOR"
             git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - name: Install Helm
-        uses: azure/setup-helm@v5
+        uses: azure/setup-helm@dda3372f752e03dde6b3237bc9431cdc2f7a02a2 # v5.0.0
       - name: Extra Helm setup
         if: ${{ inputs.extra_helm_setup != '' }}
         run: |
           set -euo pipefail
           ${{ inputs.extra_helm_setup }}
         shell: bash
-      - uses: actions/setup-go@v6
+      - uses: actions/setup-go@4a3601121dd01d1626a1e23e37211e3254c1c06c # v6.4.0
         with:
           go-version: stable
       - name: Retrieve chart version
@@ -86,10 +86,10 @@ jobs:
           helm push ${{ steps.package.outputs.chart_file }} oci://ghcr.io/${OWNER}/charts
       - name: Install cosign
         if: ${{ steps.check_release.outputs.release == 'true' }}
-        uses: sigstore/cosign-installer@v4.1.2
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
       - name: Install syft
         if: ${{ steps.check_release.outputs.release == 'true' }}
-        uses: anchore/sbom-action/download-syft@v0.24.0
+        uses: anchore/sbom-action/download-syft@e22c389904149dbc22b58101806040fa8d37a610 # v0.24.0
         with:
           syft-version: v${{ env.SYFT_VERSION }}
       - name: Install oras
@@ -97,7 +97,7 @@ jobs:
         run: go install oras.land/oras/cmd/oras@v${{ env.ORAS_VERSION }}
       - name: Login to GHCR
         if: ${{ steps.check_release.outputs.release == 'true' }}
-        uses: docker/login-action@v4
+        uses: docker/login-action@650006c6eb7dba73a995cc03b0b2d7f5ca915bee # v4.2.0
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
