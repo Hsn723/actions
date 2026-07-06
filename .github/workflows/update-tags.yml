@@ -2,11 +2,6 @@ name: Update tags
 on:
   workflow_call:
     inputs:
-      update_major_tag:
-        description: "Whether to update the major version tag (e.g. v1)"
-        required: false
-        type: boolean
-        default: false
       create_release_pr:
         description: "Whether to create a release PR for the next tag"
         required: false
@@ -51,10 +46,6 @@ jobs:
             exit 0
           fi
           git tag "$TAG"
-      - name: Update major tag
-        if: ${{ github.event_name != 'workflow_call' || inputs.update_major_tag }}
-        run: |
-          git tag -f "v${{ needs.version.outputs.major }}"
       - name: Push tags
         run: |
           git push origin --tags --force
