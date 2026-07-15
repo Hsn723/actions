@@ -5,15 +5,17 @@ inputs:
     description: "Path to policy file"
     required: false
     default: ""
-env:
-  AQUA_VERSION: v2.61.0
 runs:
   using: composite
   steps:
+  - name: Setup global config
+    shell: bash
+    run: |
+      echo "AQUA_GLOBAL_CONFIG=${{ github.action_path }}/aqua.yaml" >> $GITHUB_ENV
   - uses: aquaproj/aqua-installer@96a9bc20066c5bf5e275b41019cfc165b25f4e2e # v4.0.5
     with:
-      aqua_version: ${{ env.AQUA_VERSION }}
+      aqua_version: v2.61.0
+      aqua_opts: "-l -a"
       policy_allow: ${{ inputs.policy_allow }}
-      working_directory: ${{ github.action_path }}/../../
     env:
       GITHUB_TOKEN: ${{ github.token }}
