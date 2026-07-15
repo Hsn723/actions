@@ -16,3 +16,4 @@ runs:
       policy_allow: ${{ inputs.policy_allow }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
+      AQUA_CONFIG: ${{ github.action_path }}/../../aqua.yaml
