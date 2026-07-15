@@ -1,0 +1,15 @@
+name: Setup aqua
+description: Setup aqua for use in GitHub Actions
+inputs:
+  policy_allow:
+    description: "Path to policy file"
+    required: false
+    default: ""
+runs:
+  using: composite
+  steps:
+  - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
+    with:
+      policy_allow: ${{ inputs.policy_allow }}
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
