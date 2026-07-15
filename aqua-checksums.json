@@ -1,0 +1,59 @@
+{
+  "checksums": [
+    {
+      "id": "github_release/github.com/anchore/syft/v1.46.0/syft_1.46.0_linux_amd64.tar.gz",
+      "checksum": "D654F678B709EB53C393D38519D5ED7D2E57205529404018614CFEFA0FB2B5CA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.46.0/syft_1.46.0_linux_arm64.tar.gz",
+      "checksum": "9FAFEF4DB4F032CE81008D3A1529985D41CEB6CCDF2B388C9CE2F1ED7D32082E",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
+      "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
+      "algorithm": "sha512"
+    },
+    {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_arm64",
+      "checksum": "4B654798D39183446D8B8F2644006D3B7CBE654F14CC496444DBA93797504D0FC5D721D0C9ED1185E54CCA4F76835A9220516612F69CD3962030BC4B41262221",
+      "algorithm": "sha512"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.3.3/oras_1.3.3_linux_amd64.tar.gz",
+      "checksum": "9CE999F8D2DE03FC03968B29D743077A58783E545E5EAA53917CA177352D0E59",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.3.3/oras_1.3.3_linux_arm64.tar.gz",
+      "checksum": "AC7156F93A21E903F7AD606C792F3560F17E0CD0E36365634701B1E7CC4E4ECA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.1/cosign-linux-amd64",
+      "checksum": "AE1ECD212663F3693AD9EDF8B1A183900C9A52D3155BA6E354237F9A0F6463FC",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.1/cosign-linux-arm64",
+      "checksum": "2EC865872E331C32FD12B08DAE15332D3F92C0AA029219589684A4903CA85D11",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "http/get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz",
+      "checksum": "E9B88B4EE95B18C706839C28D3A0220E5BC470E9CD9262410C90793C45FF8B7C",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "http/get.helm.sh/helm-v4.2.3-linux-arm64.tar.gz",
+      "checksum": "21ABD9354D39B2CD79A8D76BE6912CD137A983CBF997193503FB8A6A6E2F2785",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.538.0/registry.yaml",
+      "checksum": "2BDF2310CD8DFD9AE2015014A90554485DB37EDD0902B0AA6873023F99F53CF7",
+      "algorithm": "sha256"
+    }
+  ]
+}
