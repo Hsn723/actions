@@ -1,0 +1,60 @@
+name: Update aqua
+on:
+  workflow_call:
+    inputs:
+      aqua_config:
+        description: "Path to the Aqua configuration file"
+        required: false
+        type: string
+        default: aqua.yaml
+  schedule:
+    - cron: "0 0 * * 1-5"
+  workflow_dispatch:
+permissions:
+  contents: write
+  pull-requests: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
+jobs:
+  update-aqua:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+      - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - name: Update Aqua configuration
+        run: |
+          aqua update --config "${{ inputs.aqua_config || '.github/actions/setup-aqua/aqua.yaml'}}"
+      - name: Check if there are changes
+        id: check_changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes detected"
+            echo "changes_detected=false" >> $GITHUB_OUTPUT
+          else
+            echo "Changes detected"
+            echo "changes_detected=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Update checksums
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          aqua update-checksum --config "${{ inputs.aqua_config || '.github/actions/setup-aqua/aqua.yaml'}}"
+      - name: Configure Git
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Create PR
+        if: steps.check_changes.outputs.changes_detected == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="update-aqua-$(date +%F)"
+          git checkout -b "${BRANCH}"
+          git add .
+          git commit -m "Update Aqua configuration and checksums"
+          git push origin "${BRANCH}"
+          gh pr create -t "$(git log -1 --pretty=%B | head -n1)" -b ""
