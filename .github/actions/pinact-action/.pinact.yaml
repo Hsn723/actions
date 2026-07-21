@@ -2,7 +2,7 @@
 # pinact - https://github.com/suzuki-shunsuke/pinact
 version: 3
 min_age:
-  value: 4
+  value: 2
   always: true
 rules:
 - ignore: true
