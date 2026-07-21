@@ -51,6 +51,11 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/pre-commit/pre-commit/v4.6.0/pre-commit-4.6.0.pyz",
+      "checksum": "EA8A0C84902E48C1875558F2F362ED8476773AA5FC8C16C5D8F2ACC2A2830A65",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/sigstore/cosign/v3.1.1/cosign-linux-amd64",
       "checksum": "AE1ECD212663F3693AD9EDF8B1A183900C9A52D3155BA6E354237F9A0F6463FC",
       "algorithm": "sha256"
