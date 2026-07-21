@@ -85,6 +85,7 @@ jobs:
         args: check -f .goreleaser.yml
   pinact:
     name: Pinact
+    if: ${{ github.event_name == 'pull_request' }}
     uses: hsn723/actions/.github/workflows/pinact.yml@master
     secrets: inherit
   dry-run:
