@@ -37,9 +37,21 @@ jobs:
     - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
       with:
         go-version: stable
+    - name: Pre-linting commands
+      if: ${{ inputs.lint-pre != '' }}
+      run: |
+        set -euo pipefail
+        ${{ inputs.lint-pre }}
+      shell: bash
     - uses: hsn723/actions/.github/actions/pre-commit@master
       with:
         extra-args: --all-files
+    - name: Post-linting commands
+      if: ${{ inputs.lint-post != '' }}
+      run: |
+        set -euo pipefail
+        ${{ inputs.lint-post }}
+      shell: bash
   check-goreleaser-config:
     name: Check goreleaser.yml
     runs-on: ubuntu-latest
