@@ -28,6 +28,27 @@ env:
   GH_TELEMETRY: false
   DO_NOT_TRACK: true
 jobs:
+  dependency-review:
+    name: Dependency review
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+    - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+      with:
+        comment-summary-in-pr: true
+        allow-dependencies-licenses: |
+          pkg:githubactions/hsn723/actions/.github/actions/pre-commit
+          pkg:githubactions/hsn723/actions/.github/actions/setup-aqua
+          pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/helm-release.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/pinact.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/read-version.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/update-aqua.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/update-tags.yml
+          pkg:githubactions/hsn723/actions/.github/workflows/verify.yml
   lint:
     name: Lint
     runs-on: ubuntu-latest
