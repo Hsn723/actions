@@ -1,0 +1,15 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/suzuki-shunsuke/pinact/refs/heads/main/json-schema/pinact.json
+# pinact - https://github.com/suzuki-shunsuke/pinact
+version: 3
+min_age:
+  value: 4
+  always: true
+rules:
+- ignore: true
+  conditions:
+  - expr: |
+      ActionName matches "^hsn723/actions/.*" && ActionVersion == "master"
+- min_age: 0
+  conditions:
+  - expr: |
+      ActionName matches "^hsn723/actions/.*"
