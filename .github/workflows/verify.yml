@@ -1,0 +1,83 @@
+name: verify
+on:
+  workflow_call:
+    inputs:
+      lint-pre:
+        description: "Pre-linting commands"
+        required: false
+        type: string
+        default: ""
+      lint-post:
+        description: "Post-linting commands"
+        required: false
+        type: string
+        default: ""
+      test-container:
+        description: "Whether to test container images"
+        required: false
+        type: boolean
+        default: true
+      additional-dry-run-setup:
+        description: "Additional setup commands to run before dry-run (e.g. setting up extra tools)"
+        required: false
+        type: string
+        default: ""
+permissions:
+  contents: read
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+    - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+    - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      with:
+        go-version: stable
+    - uses: hsn723/actions/.github/actions/pre-commit@master
+      with:
+        extra-args: --all-files
+  check-goreleaser-config:
+    name: Check goreleaser.yml
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+    - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+      with:
+        version: latest
+        args: check -f .goreleaser.yml
+  pinact:
+    name: Pinact
+    uses: hsn723/actions/.github/workflows/pinact.yml@master
+    secrets: inherit
+  dry-run:
+    name: Dry-run release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      with:
+        fetch-depth: 0
+    - uses: hsn723/actions/.github/actions/setup-aqua@master
+    - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+    - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+    - name: Setup latest version tag
+      run: |
+        echo "GORELEASER_CURRENT_TAG=$(git describe --tags --abbrev=0 --match "v*" || echo v0.0.0)" >> $GITHUB_ENV
+    - name: Additional dry-run setup
+      if: ${{ inputs.additional-dry-run-setup != '' }}
+      run: |
+        set -euo pipefail
+        ${{ inputs.additional-dry-run-setup }}
+      shell: bash
+    - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+      with:
+        version: latest
+        args: --snapshot --skip=sign,publish --clean
+    - name: Test container images
+      if: ${{ inputs.test-container }}
+      run: |
+        yq '.builds[].goarch[]' .goreleaaser.yml | sort -u | \
+        xargs -I {} container-structure-test test --image ghcr.io/${{ github.repository }}:${GORELEASER_CURRENT_TAG}-next-{} --platform linux/{} --config cst.yaml
