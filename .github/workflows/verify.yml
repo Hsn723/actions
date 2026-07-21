@@ -41,6 +41,7 @@ jobs:
       with:
         comment-summary-in-pr: true
         allow-dependencies-licenses: |
+          pkg:githubactions/hsn723/actions/.github/actions/pinact-action
           pkg:githubactions/hsn723/actions/.github/actions/pre-commit
           pkg:githubactions/hsn723/actions/.github/actions/setup-aqua
           pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
