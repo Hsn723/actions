@@ -7,6 +7,17 @@ pull_request_rules:
     actions:
       merge:
         method: squash
+  - name: Automatic merge for aqua update
+    conditions:
+      - author~=^github-actions\[bot\]$
+      - or:
+        - files~=^(\.github/actions/setup-aqua/aqua(\.yaml|-checksums\.json))$
+      - -files~=^(?!(\.github/actions/setup-aqua/aqua(\.yaml|-checksums\.json))).*$
+    actions:
+      review:
+        type: APPROVE
+      merge:
+        method: squash
   - name: Automatic merge for dependabot
     conditions:
       - author~=^dependabot\[bot\]$
