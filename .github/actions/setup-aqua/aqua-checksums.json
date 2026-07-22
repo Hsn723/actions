@@ -31,6 +31,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.49.0/syft_1.49.0_linux_amd64.tar.gz",
+      "checksum": "7AA2F03EE92739CF643279BA3990548B9925D4E22CAE13F46831EE62821147FE",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.49.0/syft_1.49.0_linux_arm64.tar.gz",
+      "checksum": "C7C32DE183C32368DE197EDBA75E8DBA7632915F7761BACD55149A9CA7FE0FA4",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -53,6 +63,11 @@
     {
       "id": "github_release/github.com/pre-commit/pre-commit/v4.6.0/pre-commit-4.6.0.pyz",
       "checksum": "EA8A0C84902E48C1875558F2F362ED8476773AA5FC8C16C5D8F2ACC2A2830A65",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/pre-commit/pre-commit/v4.6.1/pre-commit-4.6.1.pyz",
+      "checksum": "6768CC8F4F810509B9272211C70EF7BB405C52DA2BA81B673B2C361A72F1815D",
       "algorithm": "sha256"
     },
     {
@@ -98,6 +113,11 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.539.0/registry.yaml",
       "checksum": "E022DF660F01744ABFE3E93FABC7FE17E36885549E447BB2667208D2E5804F4D",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.540.0/registry.yaml",
+      "checksum": "90525C31FA88F20E65C812B7F3098046F4EA8BFE8B68D7DAE8296748D2AD34A8",
       "algorithm": "sha256"
     }
   ]
