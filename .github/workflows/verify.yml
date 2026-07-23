@@ -36,54 +36,55 @@ jobs:
       contents: read
       pull-requests: write
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
-      with:
-        comment-summary-in-pr: true
-        allow-dependencies-licenses: |
-          pkg:githubactions/hsn723/actions/.github/actions/pinact-action
-          pkg:githubactions/hsn723/actions/.github/actions/pre-commit
-          pkg:githubactions/hsn723/actions/.github/actions/setup-aqua
-          pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/helm-release.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/pinact.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/read-version.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/update-aqua.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/update-tags.yml
-          pkg:githubactions/hsn723/actions/.github/workflows/verify.yml
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5.0.0
+        with:
+          comment-summary-in-pr: true
+          allow-dependencies-licenses: |-
+            pkg:githubactions/hsn723/actions/.github/actions/pre-commit
+            pkg:githubactions/hsn723/actions/.github/actions/setup-aqua
+            pkg:githubactions/hsn723/actions/.github/actions/pinact-action
+            pkg:githubactions/hsn723/actions/.github/workflows/pinact.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/helm-release.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/verify.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/update-tags.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/release.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/update-aqua.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/read-version.yml
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
-    - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-      with:
-        go-version: stable
-    - name: Pre-linting commands
-      if: ${{ inputs.lint-pre != '' }}
-      run: |
-        set -euo pipefail
-        ${{ inputs.lint-pre }}
-      shell: bash
-    - uses: hsn723/actions/.github/actions/pre-commit@master
-      with:
-        extra-args: --all-files
-    - name: Post-linting commands
-      if: ${{ inputs.lint-post != '' }}
-      run: |
-        set -euo pipefail
-        ${{ inputs.lint-post }}
-      shell: bash
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+      - name: Pre-linting commands
+        if: ${{ inputs.lint-pre != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.lint-pre }}
+        shell: bash
+      - uses: hsn723/actions/.github/actions/pre-commit@master
+        with:
+          extra-args: --all-files
+      - name: Post-linting commands
+        if: ${{ inputs.lint-post != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.lint-post }}
+        shell: bash
   check-goreleaser-config:
     name: Check goreleaser.yml
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-    - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
-      with:
-        version: latest
-        args: check -f .goreleaser.yml
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          version: latest
+          args: check -f .goreleaser.yml
   pinact:
     name: Pinact
     if: ${{ github.event_name == 'pull_request' }}
@@ -93,30 +94,30 @@ jobs:
     name: Dry-run release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      with:
-        fetch-depth: 0
-    - uses: hsn723/actions/.github/actions/setup-aqua@master
-    - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-      with:
-        go-version: stable
-    - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
-    - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
-    - name: Setup latest version tag
-      run: |
-        echo "GORELEASER_CURRENT_TAG=$(git describe --tags --abbrev=0 --match "v*" || echo v0.0.0)" >> $GITHUB_ENV
-    - name: Additional dry-run setup
-      if: ${{ inputs.additional-dry-run-setup != '' }}
-      run: |
-        set -euo pipefail
-        ${{ inputs.additional-dry-run-setup }}
-      shell: bash
-    - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
-      with:
-        version: latest
-        args: --snapshot --skip=sign,publish --clean
-    - name: Test container images
-      if: ${{ inputs.test-container }}
-      run: |
-        yq '.builds[].goarch[]' .goreleaaser.yml | sort -u | \
-        xargs -I {} container-structure-test test --image ghcr.io/${{ github.repository }}:${GORELEASER_CURRENT_TAG}-next-{} --platform linux/{} --config cst.yaml
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+      - uses: docker/setup-qemu-action@96fe6ef7f33517b61c61be40b68a1882f3264fb8 # v4.2.0
+      - uses: docker/setup-buildx-action@bb05f3f5519dd87d3ba754cc423b652a5edd6d2c # v4.2.0
+      - name: Setup latest version tag
+        run: |
+          echo "GORELEASER_CURRENT_TAG=$(git describe --tags --abbrev=0 --match "v*" || echo v0.0.0)" >> $GITHUB_ENV
+      - name: Additional dry-run setup
+        if: ${{ inputs.additional-dry-run-setup != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.additional-dry-run-setup }}
+        shell: bash
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          version: latest
+          args: --snapshot --skip=sign,publish --clean
+      - name: Test container images
+        if: ${{ inputs.test-container }}
+        run: |
+          yq '.builds[].goarch[]' .goreleaaser.yml | sort -u | \
+          xargs -I {} container-structure-test test --image ghcr.io/${{ github.repository }}:${GORELEASER_CURRENT_TAG}-next-{} --platform linux/{} --config cst.yaml
