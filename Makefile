@@ -7,8 +7,8 @@ update-dependency-whitelist: setup-aqua
 
 .PHONY: setup-aqua
 setup-aqua:
-	AQUA_VERSION=$$(grep -oP "(?<=aqua_version: )v\d+\.\d+\.\d+" .github/actions/setup-aqua/action.yml)
+	AQUA_VERSION=$$(grep -oP "(?<=aqua_version: )v\d+\.\d+\.\d+" .github/actions/setup-aqua/action.yml) ;\
 	@if [ ! -x "$(shell command -v aqua)" ]; then \
-		go install github.com/aquaproj/aqua/v2/cmd/aqua@v$(AQUA_VERSION) ;\
+		go install github.com/aquaproj/aqua/v2/cmd/aqua@$(AQUA_VERSION) ;\
 	fi
 	aqua i -l -c .github/actions/setup-aqua/aqua.yaml
