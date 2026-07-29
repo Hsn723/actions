@@ -76,6 +76,35 @@ jobs:
           set -euo pipefail
           ${{ inputs.lint-post }}
         shell: bash
+  govulncheck:
+    name: Govulncheck
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      MARKER: "<!-- govulncheck-report -->"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      ISSUE_ID: ${{ github.event.number }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+      - run: |
+          echo "${MARKER}" > govulncheck-report.txt
+          govulncheck ./... >> govulncheck-report.txt || true
+          COMMENT_ID=$(gh api repos/${{ github.repository }}/issues/${ISSUE_ID}/comments \
+            --jq ".[] | select(.body | contains(\"${MARKER}\")) | .id" | head -n 1)
+          METHOD="POST"
+          if [ -n "${COMMENT_ID}" ]; then
+            METHOD="PATCH"
+          fi
+          gh api repos/${{ github.repository }}/issues/${ISSUE_ID}/comments \
+              -X ${METHOD} \
+              -F govulncheck-report.txt"
   check-goreleaser-config:
     name: Check goreleaser.yml
     runs-on: ubuntu-latest
