@@ -1,0 +1,54 @@
+name: Govulncheck
+on:
+  workflow_call:
+    inputs:
+      issue-id:
+        description: "Issue ID to link the scan results to"
+        required: true
+        type: string
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: read
+  pull-requests: write
+  security-events: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
+jobs:
+  govulncheck:
+    name: Govulncheck
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      MARKER: "<!-- govulncheck-report -->"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+      - run: |
+          FORMAT="sarif"
+          if "${{ inputs.issue-id }}" != "" ]; then
+            FORMAT="text"
+            echo "${MARKER}" > govulncheck.report
+          fi
+          (govulncheck -format "${FORMAT}" ./... || true ) >> govulncheck.report
+      - name: Upload SARIF report
+        if: ${{ github.event_name != 'pull_request' || inputs.issue-id == '' }}
+        uses: github/codeql-action/upload-sarif@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4.37.3
+        with:
+          sarif_file: govulncheck.report
+      - name: Create or update issue comment
+        if: ${{ inputs.issue-id != '' }}
+        run: |
+          COMMENT_ID=$(gh api repos/${{ github.repository }}/issues/${ISSUE_ID}/comments \
+            --jq ".[] | select(.body | contains(\"${MARKER}\")) | .id" | head -n 1)
+          METHOD="POST"
+          if [ -n "${COMMENT_ID}" ]; then
+            METHOD="PATCH"
+          fi
+          gh api repos/${{ github.repository }}/issues/${{ inputs.issue-id }}/comments \
+              -X ${METHOD} \
+              -F govulncheck.report
