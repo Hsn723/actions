@@ -1,11 +1,12 @@
-name: Govulncheck
+name: Code scan
 on:
   workflow_call:
     inputs:
       issue-id:
         description: "Issue ID to link the scan results to"
-        required: true
+        required: false
         type: string
+        default: ""
   workflow_dispatch:
 permissions:
   actions: read
@@ -25,12 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: hsn723/actions/.github/actions/setup-aqua@master
-      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
-        with:
-          go-version: stable
       - run: |
           FORMAT="sarif"
-          if "${{ inputs.issue-id }}" != "" ]; then
+          if [ "${{ inputs.issue-id }}" != "" ]; then
             FORMAT="text"
             echo "${MARKER}" > govulncheck.report
           fi
