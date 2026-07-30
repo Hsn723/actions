@@ -26,6 +26,9 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
       - run: |
           FORMAT="sarif"
           if [ "${{ inputs.issue-id }}" != "" ]; then
@@ -34,19 +37,20 @@ jobs:
           fi
           (govulncheck -format "${FORMAT}" ./... || true ) >> govulncheck.report
       - name: Upload SARIF report
-        if: ${{ github.event_name != 'pull_request' || inputs.issue-id == '' }}
+        if: ${{ inputs.issue-id == '' }}
         uses: github/codeql-action/upload-sarif@e4fba868fa4b1b91e1fdab776edc8cfbe6e9fb81 # v4.37.3
         with:
           sarif_file: govulncheck.report
       - name: Create or update issue comment
         if: ${{ inputs.issue-id != '' }}
         run: |
-          COMMENT_ID=$(gh api repos/${{ github.repository }}/issues/${ISSUE_ID}/comments \
+          COMMENT_ID=$(gh api repos/${{ github.repository }}/issues/${input.issue-id}/comments \
             --jq ".[] | select(.body | contains(\"${MARKER}\")) | .id" | head -n 1)
-          METHOD="POST"
           if [ -n "${COMMENT_ID}" ]; then
-            METHOD="PATCH"
+            gh api repos/${{ github.repository }}/issues/comments/${COMMENT_ID} \
+                -X PATCH \
+                -F body=@govulncheck.report
+          else
+            gh api repos/${{ github.repository }}/issues/${{ inputs.issue-id }}/comments \
+                -F body=@govulncheck.report
           fi
-          gh api repos/${{ github.repository }}/issues/${{ inputs.issue-id }}/comments \
-              -X ${METHOD} \
-              -F govulncheck.report
