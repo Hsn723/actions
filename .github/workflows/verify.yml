@@ -81,8 +81,10 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     uses: hsn723/actions/.github/workflows/code-scan.yml@master
     permissions:
+      actions: read
       contents: read
       pull-requests: write
+      security-events: write
     secrets: inherit
     with:
       issue-id: ${{ github.event.number }}
