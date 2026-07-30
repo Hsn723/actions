@@ -53,17 +53,16 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
           BRANCH="update-aqua-$(date +%F)"
-          CREATE="true"
+          CREATE="-b"
           if [ $(gh pr list -l dependencies -l aqua --json headRefName -q length) -gt 0 ]; then
-            CREATE="false"
+            CREATE=""
             BRANCH=$(gh pr list -l dependencies -l aqua --json headRefName -q '.[0].headRefName')
-            git checkout "${BRANCH}"
           else
-            git checkout -b "${BRANCH}"
+            git checkout ${CREATE} "${BRANCH}"
           fi
           git add .
           git commit -m "Update Aqua configuration and checksums"
           git push origin "${BRANCH}"
-          if [ "${CREATE}" = "true" ]; then
+          if [ "${CREATE}" = "-b" ]; then
             gh pr create -l dependencies -l aqua -t "$(git log -1 --pretty=%B | head -n1)" -b ""
           fi
