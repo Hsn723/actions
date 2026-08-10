@@ -57,9 +57,8 @@ jobs:
           if [ $(gh pr list -l dependencies -l aqua --json headRefName -q length) -gt 0 ]; then
             CREATE=""
             BRANCH=$(gh pr list -l dependencies -l aqua --json headRefName -q '.[0].headRefName')
-          else
-            git checkout ${CREATE} "${BRANCH}"
           fi
+          git checkout ${CREATE} "${BRANCH}"
           git add .
           git commit -m "Update Aqua configuration and checksums"
           git push origin "${BRANCH}"
