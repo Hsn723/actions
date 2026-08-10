@@ -58,7 +58,9 @@ jobs:
             CREATE=""
             BRANCH=$(gh pr list -l dependencies -l aqua --json headRefName -q '.[0].headRefName')
           fi
+          git stash
           git checkout ${CREATE} "${BRANCH}"
+          git stash pop
           git add .
           git commit -m "Update Aqua configuration and checksums"
           git push origin "${BRANCH}"
