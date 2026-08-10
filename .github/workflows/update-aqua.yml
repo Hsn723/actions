@@ -25,6 +25,20 @@ jobs:
         with:
           fetch-depth: 0
       - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - name: Checkout work branch
+        id: checkout
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="update-aqua-$(date +%F)"
+          CREATE="-b"
+          if [ $(gh pr list -l dependencies -l aqua --json headRefName -q length) -gt 0 ]; then
+            CREATE=""
+            BRANCH=$(gh pr list -l dependencies -l aqua --json headRefName -q '.[0].headRefName')
+          fi
+          git checkout ${CREATE} "${BRANCH}"
+          echo "create_pr=$([ "${CREATE}" = "-b" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+          echo "branch=${BRANCH}" >> $GITHUB_OUTPUT
       - name: Update Aqua configuration
         run: |
           aqua update --config "${{ inputs.aqua_config || '.github/actions/setup-aqua/aqua.yaml'}}"
@@ -52,18 +66,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: |
-          BRANCH="update-aqua-$(date +%F)"
-          CREATE="-b"
-          if [ $(gh pr list -l dependencies -l aqua --json headRefName -q length) -gt 0 ]; then
-            CREATE=""
-            BRANCH=$(gh pr list -l dependencies -l aqua --json headRefName -q '.[0].headRefName')
-          fi
-          git stash
-          git checkout ${CREATE} "${BRANCH}"
-          git stash pop
           git add .
           git commit -m "Update Aqua configuration and checksums"
-          git push origin "${BRANCH}"
-          if [ "${CREATE}" = "-b" ]; then
+          git push origin "${{ steps.checkout.branch }}"
+          if [ "${{ steps.checkout.create_pr }}" = "true" ]; then
             gh pr create -l dependencies -l aqua -t "$(git log -1 --pretty=%B | head -n1)" -b ""
           fi
