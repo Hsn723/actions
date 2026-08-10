@@ -68,7 +68,7 @@ jobs:
         run: |
           git add .
           git commit -m "Update Aqua configuration and checksums"
-          git push origin "${{ steps.checkout.branch }}"
-          if [ "${{ steps.checkout.create_pr }}" = "true" ]; then
+          git push origin "${{ steps.checkout.outputs.branch }}"
+          if [ "${{ steps.checkout.outputs.create_pr }}" = "true" ]; then
             gh pr create -l dependencies -l aqua -t "$(git log -1 --pretty=%B | head -n1)" -b ""
           fi
