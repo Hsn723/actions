@@ -9,7 +9,7 @@ checksum:
   - linux
 registries:
 - type: standard
-  ref: v4.548.0 # renovate: depName=aquaproj/aqua-registry
+  ref: v4.550.0 # renovate: depName=aquaproj/aqua-registry
 packages:
 - name: anchore/syft@v1.50.0
 - name: oras-project/oras@v1.3.3
