@@ -51,6 +51,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.51.0/syft_1.51.0_linux_amd64.tar.gz",
+      "checksum": "2A2E837A2C8D59EC9AF5472EE22D3B04EE463C4E44476ECF993FD1E5AB6EBC7F",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.51.0/syft_1.51.0_linux_arm64.tar.gz",
+      "checksum": "6C0466811541EA03ADD5213A60A1562F0851E4C0B0ECFDEE1A694A9455285900",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -78,6 +88,11 @@
     {
       "id": "github_release/github.com/pre-commit/pre-commit/v4.6.1/pre-commit-4.6.1.pyz",
       "checksum": "6768CC8F4F810509B9272211C70EF7BB405C52DA2BA81B673B2C361A72F1815D",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/pre-commit/pre-commit/v4.6.2/pre-commit-4.6.2.pyz",
+      "checksum": "43C09A73D82AF8EFFF09900E60D76D67A2C3D990613C3C770B2B5C4418A16C4B",
       "algorithm": "sha256"
     },
     {
