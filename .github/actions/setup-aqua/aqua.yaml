@@ -14,8 +14,8 @@ packages:
 - name: anchore/syft@v1.51.0
 - name: oras-project/oras@v1.3.3
 - name: sigstore/cosign@v3.1.3
-- name: helm/helm@v4.2.3
+- name: helm/helm@v4.2.4
 - name: mikefarah/yq@v4.53.3
 - name: GoogleContainerTools/container-structure-test@v1.22.1
 - name: pre-commit/pre-commit@v4.6.2
-- name: golang/vuln/govulncheck@v1.6.0
+- name: golang/vuln/govulncheck@v1.7.0
