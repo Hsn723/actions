@@ -7,6 +7,11 @@ on:
         required: false
         type: string
         default: ""
+      govulncheck-pre:
+        description: "Pre-scan commands for govulncheck"
+        required: false
+        type: string
+        default: ""
   workflow_dispatch:
 permissions:
   actions: read
@@ -29,6 +34,12 @@ jobs:
       - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
           go-version: stable
+      - name: Pre-scan commands
+        if: ${{ inputs.govulncheck-pre != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.govulncheck-pre }}
+        shell: bash
       - run: |
           FORMAT="sarif"
           if [ "${{ inputs.issue-id }}" != "" ]; then

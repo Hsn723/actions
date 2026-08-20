@@ -22,6 +22,11 @@ on:
         required: false
         type: string
         default: ""
+      govulncheck-pre:
+        description: "Pre-scan commands for govulncheck"
+        required: false
+        type: string
+        default: ""
 permissions:
   contents: read
 env:
@@ -88,6 +93,7 @@ jobs:
     secrets: inherit
     with:
       issue-id: ${{ github.event.number }}
+      govulncheck-pre: ${{ inputs.govulncheck-pre }}
   check-goreleaser-config:
     name: Check goreleaser.yml
     runs-on: ubuntu-latest
