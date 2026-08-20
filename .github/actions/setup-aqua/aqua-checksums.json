@@ -71,6 +71,16 @@
       "algorithm": "sha512"
     },
     {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.4/yq_linux_amd64",
+      "checksum": "BB684957682B9837373670F5AC25817C5CCBC7E36BAF4F1F8710533640ED0D33171FF1D6E2C0EFA07682C3CD07FFCBEFAB17C60C2B0E5B0D257F90654CD07F67",
+      "algorithm": "sha512"
+    },
+    {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.4/yq_linux_arm64",
+      "checksum": "2482F3783AF4671F8C21B97C260084069B4EAFDCC42F5B63537EA3DD32FEAA5F110492BC8697A4835A3EE8BCF9DF7C77283B65F2C0A609B7C2F84310474CE179",
+      "algorithm": "sha512"
+    },
+    {
       "id": "github_release/github.com/oras-project/oras/v1.3.3/oras_1.3.3_linux_amd64.tar.gz",
       "checksum": "9CE999F8D2DE03FC03968B29D743077A58783E545E5EAA53917CA177352D0E59",
       "algorithm": "sha256"
@@ -136,6 +146,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "http/get.helm.sh/helm-v4.2.4-linux-amd64.tar.gz",
+      "checksum": "C306B46F719B0A4DA32D0F78EE21BF90CE8D602F15B22AB753F0674D1670A7F3",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "http/get.helm.sh/helm-v4.2.4-linux-arm64.tar.gz",
+      "checksum": "564DE2191B881E9F71B5606B25345821EA1682F06AB90499D3AB22B530176DA1",
+      "algorithm": "sha256"
+    },
+    {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.538.0/registry.yaml",
       "checksum": "2BDF2310CD8DFD9AE2015014A90554485DB37EDD0902B0AA6873023F99F53CF7",
       "algorithm": "sha256"
@@ -188,6 +208,21 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.550.0/registry.yaml",
       "checksum": "CB90BB436C94AD3922E39BC88D281320CC7D9C2200EF2700197D989E74581FFA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.551.0/registry.yaml",
+      "checksum": "101779B840D3D53673DCF02005B015E290ED7C9C835CEBD6914BC651A00C5D8B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.552.0/registry.yaml",
+      "checksum": "24EE3C66CE9DD9C2A5F790268252399A3614A746F50DB24158096974B98C8618",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.553.0/registry.yaml",
+      "checksum": "A0610103BC291509498CA448B8E9FB09588A1999FD0E391D1BEBEA8E596348A0",
       "algorithm": "sha256"
     }
   ]
