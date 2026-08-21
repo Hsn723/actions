@@ -81,6 +81,16 @@
       "algorithm": "sha512"
     },
     {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.6/yq_linux_amd64",
+      "checksum": "508F4EE34C6D093D136FF3C1B36DB4105E686C3D68D435C064448BA16E2616D528EFAFB2CB0A1890B7724890373A226A38B7DA27E6796396EE759BED39A8C671",
+      "algorithm": "sha512"
+    },
+    {
+      "id": "github_release/github.com/mikefarah/yq/v4.53.6/yq_linux_arm64",
+      "checksum": "D7B42B08F3CC2CF115CEB0579C143A7FCCCEEE9E496075004BCBC34E173CFD0A4DACC0BDC6FC502C2869586B9FC949116DB5FE9BEF973C1A14568F4BD625EDFA",
+      "algorithm": "sha512"
+    },
+    {
       "id": "github_release/github.com/oras-project/oras/v1.3.3/oras_1.3.3_linux_amd64.tar.gz",
       "checksum": "9CE999F8D2DE03FC03968B29D743077A58783E545E5EAA53917CA177352D0E59",
       "algorithm": "sha256"
@@ -223,6 +233,11 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.553.0/registry.yaml",
       "checksum": "A0610103BC291509498CA448B8E9FB09588A1999FD0E391D1BEBEA8E596348A0",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.554.0/registry.yaml",
+      "checksum": "40C72E0CAA7E3AA18893E39AAD5224FA68B8B4C969AF82012618CC3CBC3AF9AA",
       "algorithm": "sha256"
     }
   ]
