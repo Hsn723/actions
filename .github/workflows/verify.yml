@@ -137,5 +137,5 @@ jobs:
       - name: Test container images
         if: ${{ inputs.test-container }}
         run: |
-          yq '.builds[].goarch[]' .goreleaaser.yml | sort -u | \
+          yq '.builds[].goarch[]' .goreleaser.yml | sort -u | \
           xargs -I {} container-structure-test test --image ghcr.io/${{ github.repository }}:${GORELEASER_CURRENT_TAG}-next-{} --platform linux/{} --config cst.yaml
