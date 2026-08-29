@@ -61,6 +61,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.51.1/syft_1.51.1_linux_amd64.tar.gz",
+      "checksum": "8FCB33017A0DC1058298C923C436D19DFA68AE93968E0B423248542E3AFB9FC3",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.51.1/syft_1.51.1_linux_arm64.tar.gz",
+      "checksum": "A7FD2B784E6664ACD44719270574F6CD8C6864FC2B1700BF9099BD1CCCDA7D7F",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -98,6 +108,16 @@
     {
       "id": "github_release/github.com/oras-project/oras/v1.3.3/oras_1.3.3_linux_arm64.tar.gz",
       "checksum": "AC7156F93A21E903F7AD606C792F3560F17E0CD0E36365634701B1E7CC4E4ECA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.3.4/oras_1.3.4_linux_amd64.tar.gz",
+      "checksum": "F27ADB935022D94DF8DC77719C322DDA592C78A0D57A6F7DCDD8D900B248C454",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.3.4/oras_1.3.4_linux_arm64.tar.gz",
+      "checksum": "15702C6E3A4A56A8BD8AC5C17EFDBCAB56D9BADA661CCBCF017F5B10C1D89399",
       "algorithm": "sha256"
     },
     {
@@ -238,6 +258,16 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.554.0/registry.yaml",
       "checksum": "40C72E0CAA7E3AA18893E39AAD5224FA68B8B4C969AF82012618CC3CBC3AF9AA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.555.0/registry.yaml",
+      "checksum": "C3A707573C81DD2FB404B7758EF0FCBFA401AE416211928ABD182DFDA0E41F55",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.556.0/registry.yaml",
+      "checksum": "38D433AD50D8CC48A1B6200BDA9C46DE488F8E790803973F8DE1D066385DB080",
       "algorithm": "sha256"
     }
   ]
