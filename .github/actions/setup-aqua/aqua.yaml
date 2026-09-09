@@ -18,4 +18,4 @@ packages:
 - name: mikefarah/yq@v4.53.6
 - name: GoogleContainerTools/container-structure-test@v1.22.1
 - name: pre-commit/pre-commit@v4.6.2
-- name: golang/vuln/govulncheck@v1.7.0
+- name: golang/vuln/govulncheck@v1.8.0
