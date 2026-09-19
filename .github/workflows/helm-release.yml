@@ -19,6 +19,16 @@ on:
         required: false
         type: string
         default: "dist"
+      disable-sudo:
+        description: "harden-runner option to disable sudo"
+        required: false
+        type: boolean
+        default: true
+      egress-policy:
+        description: "harden-runner option to set egress policy"
+        required: false
+        type: string
+        default: "audit"
 permissions:
   contents: write
   packages: write
@@ -31,6 +41,11 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
+      - name: Harden Runner
+        uses: step-security/harden-runner@e14015d583714f6e62063499dc959a02595150a1 # v2.21.1
+        with:
+          egress-policy: ${{ inputs.egress-policy }}
+          disable-sudo: ${{ inputs.disable-sudo }}
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
