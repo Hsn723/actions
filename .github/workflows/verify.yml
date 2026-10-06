@@ -46,17 +46,19 @@ jobs:
         with:
           comment-summary-in-pr: true
           allow-dependencies-licenses: |-
+            pkg:githubactions/hsn723/actions/.github/actions/pinact-action
             pkg:githubactions/hsn723/actions/.github/actions/pre-commit
             pkg:githubactions/hsn723/actions/.github/actions/setup-aqua
-            pkg:githubactions/hsn723/actions/.github/actions/pinact-action
-            pkg:githubactions/hsn723/actions/.github/workflows/pinact.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/code-scan.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/helm-lint.yml
             pkg:githubactions/hsn723/actions/.github/workflows/helm-release.yml
-            pkg:githubactions/hsn723/actions/.github/workflows/verify.yml
-            pkg:githubactions/hsn723/actions/.github/workflows/update-tags.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/pinact.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/read-version.yml
             pkg:githubactions/hsn723/actions/.github/workflows/release.yml
             pkg:githubactions/hsn723/actions/.github/workflows/update-aqua.yml
-            pkg:githubactions/hsn723/actions/.github/workflows/create-release-pr.yml
-            pkg:githubactions/hsn723/actions/.github/workflows/read-version.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/update-tags.yml
+            pkg:githubactions/hsn723/actions/.github/workflows/verify.yml
   lint:
     name: Lint
     runs-on: ubuntu-latest
