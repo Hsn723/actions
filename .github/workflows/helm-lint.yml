@@ -1,0 +1,71 @@
+name: Lint and test Helm charts
+on:
+  workflow_call:
+    inputs:
+      apply_cert_manager:
+        description: "Whether to apply cert-manager CRDs"
+        required: false
+        type: boolean
+        default: false
+      preload_docker_image:
+        description: "docker image to preload into the kind cluster"
+        required: false
+        type: string
+        default: ""
+      extra_helm_setup:
+        description: "Extra setup commands for helm"
+        required: false
+        type: string
+        default: ""
+      helm_extra_set_args:
+        description: "Extra arguments to pass to helm template"
+        required: false
+        type: string
+        default: ""
+permissions:
+  contents: read
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
+jobs:
+  lint-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Set up chart-testing
+        uses: step-security/chart-testing-action@15da1b228ff87f99052869d22b26196ee99afd17 # v2.8.1
+      - name: Run chart-testing (list-changed)
+        id: list-changed
+        run: |
+          changed=$(ct list-changed --config ct.yaml)
+          if [[ -n "$changed" ]]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+      - name: Run chart-testing (lint)
+        run: ct lint --config ct.yaml
+      - name: Create kind cluster
+        uses: helm/kind-action@06c1ae10762d3b9c1644e7fe69596ae519e015a2 # v1.15.0
+        if: steps.list-changed.outputs.changed == 'true'
+      - name: Apply cert-manager
+        if: ${{ steps.list-changed.outputs.changed == 'true' && inputs.apply_cert_manager }}
+        run: |
+          kubectl apply -f https://github.com/jetstack/cert-manager/releases/latest/download/cert-manager.yaml
+          kubectl -n cert-manager wait --for=condition=available --timeout=180s --all deployments
+      - name: Preload docker image
+        if: ${{ steps.list-changed.outputs.changed == 'true' && inputs.preload_docker_image != '' }}
+        run: |
+          docker pull ${{ inputs.preload_docker_image }}
+          kind load docker-image ${{ inputs.preload_docker_image }} --name chart-testing
+      - name: Extra Helm setup
+        if: ${{ steps.list-changed.outputs.changed == 'true' && inputs.extra_helm_setup != '' }}
+        run: |
+          set -euo pipefail
+          ${{ inputs.extra_helm_setup }}
+        shell: bash
+      - name: Run chart-testing (install)
+        if: steps.list-changed.outputs.changed == 'true'
+        run: ct install --config ct.yaml --helm-extra-set-args "${{ inputs.helm_extra_set_args }}"
