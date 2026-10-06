@@ -118,5 +118,5 @@ jobs:
         if: ${{ steps.check_release.outputs.release == 'true' }}
         run: |
           cosign attest --yes --predicate "${{ steps.generate_sbom.outputs.sbom_file }}" \
-            --type spdx \
+            --type spdxjson \
             ${{ steps.check_release.outputs.chart_uri }}
