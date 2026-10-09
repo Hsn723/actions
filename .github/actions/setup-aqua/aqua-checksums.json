@@ -91,6 +91,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.54.1/syft_1.54.1_linux_amd64.tar.gz",
+      "checksum": "C069905B391CC4C20A5BA65AD5C10BE2A7BA074F8EA6AD203E24D14E303DAD47",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.54.1/syft_1.54.1_linux_arm64.tar.gz",
+      "checksum": "DFDF0537610113EDBEFE1F1FC6548BC957B2D77439636EC824FCF0E10D46D054",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -368,6 +378,16 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.572.0/registry.yaml",
       "checksum": "4243DD2A71177D47B876247242815C95B077332C9D3A10C56184B1CF76609F71",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.573.0/registry.yaml",
+      "checksum": "52A43B0B2817A56FE7566625809D7CCA41A1178CCAE2B152941221B516E70228",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.573.1/registry.yaml",
+      "checksum": "7F95A2779ECA5740BF20BA529680C6DC7CA280811334A819A2D7870F41BFEFC5",
       "algorithm": "sha256"
     }
   ]
