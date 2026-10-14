@@ -1,0 +1,54 @@
+name: Update Helm chart version
+on:
+  workflow_call:
+    inputs:
+      chart_name:
+        required: true
+        type: string
+permissions:
+  contents: write
+  pull-requests: write
+env:
+  GH_TELEMETRY: false
+  DO_NOT_TRACK: true
+jobs:
+  update-helm-chart:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: hsn723/actions/.github/actions/setup-aqua@master
+      - name: Update Chart.yaml
+        id: update_chart
+        run: |
+          VERSION=$(cat VERSION)
+          BRANCH="update-helm-chart-version-${VERSION}"
+          CHART_VERSION=$(yq ".appVersion" "charts/${{ inputs.chart_name }}/Chart.yaml")
+          if [ "${VERSION}" != "${CHART_VERSION}" ]; then
+            echo "Updating Chart.yaml version from ${CHART_VERSION} to ${VERSION}"
+            git checkout -b "${BRANCH}"
+            yq -i ".appVersion = \"${VERSION}\"" "charts/${{ inputs.chart_name }}/Chart.yaml"
+            yq -i ".version = \"${VERSION}\"" "charts/${{ inputs.chart_name }}/Chart.yaml"
+            git add "charts/${{ inputs.chart_name }}/Chart.yaml"
+            echo "update=true" >> ${GITHUB_OUTPUT}
+            echo "branch=${BRANCH}" >> ${GITHUB_OUTPUT}
+          else
+            echo "Chart.yaml version is already up-to-date (${CHART_VERSION})"
+            echo "update=false" >> ${GITHUB_OUTPUT}
+          fi
+      - name: Configure Git
+        if: steps.update_chart.outputs.update == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - name: Create PR
+        if: steps.update_chart.outputs.update == 'true'
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          git add .
+          git commit -m "Update Helm chart version to $(cat VERSION)"
+          git push origin "${{ steps.update_chart.outputs.branch }}"
+          gh pr create -t "Update Helm chart version to $(cat VERSION)" -b ""
