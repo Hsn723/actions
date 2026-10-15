@@ -32,6 +32,11 @@ on:
         required: false
         type: string
         default: "audit"
+      chart_name:
+        description: "Name of the Helm chart associated with this release"
+        required: false
+        type: string
+        default: ""
 permissions:
   contents: write
   id-token: write
@@ -135,3 +140,12 @@ jobs:
             syft "${IMAGE}" -o spdx-json > "${SBOM_FILE}"
             oras attach --artifact-type application/spdx+json "${IMAGE}" "${SBOM_FILE}:application/spdx+json"
           done
+  update-helm-chart:
+    uses: hsn723/actions/.github/workflows/update-helm-chart.yml@master
+    needs: release
+    if: ${{ inputs.chart_name != '' }}
+    permissions:
+      contents: write
+      pull-requests: write
+    with:
+      chart_name: ${{ inputs.chart_name }}
