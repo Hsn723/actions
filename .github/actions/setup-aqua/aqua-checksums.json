@@ -161,6 +161,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/oras-project/oras/v1.3.5/oras_1.3.5_linux_amd64.tar.gz",
+      "checksum": "F48A73EA6D026A862C3919FC773DA9A8C86FC259C2C737D5BAED3B8B9614AD22",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.3.5/oras_1.3.5_linux_arm64.tar.gz",
+      "checksum": "D5D4E5AFD5C0781C93EDA5EA1976E654E1FDEE202C1DDAEAF5F91A8C4FD67D46",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/pre-commit/pre-commit/v4.6.0/pre-commit-4.6.0.pyz",
       "checksum": "EA8A0C84902E48C1875558F2F362ED8476773AA5FC8C16C5D8F2ACC2A2830A65",
       "algorithm": "sha256"
