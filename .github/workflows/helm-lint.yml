@@ -37,7 +37,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
       - name: Set up chart-testing
-        uses: step-security/chart-testing-action@15da1b228ff87f99052869d22b26196ee99afd17 # v2.8.1
+        uses: step-security/chart-testing-action@877d2a5d4d9cb1af8a9d7fb79c7b2fd2e8d07e1f # v2.9.0
       - name: Run chart-testing (list-changed)
         id: list-changed
         run: |
