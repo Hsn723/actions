@@ -101,6 +101,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.55.0/syft_1.55.0_linux_amd64.tar.gz",
+      "checksum": "BB65249542DB5FEDEEB4D3F9B018B75E7264DBFBBB10486F044581A92F90490D",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.55.0/syft_1.55.0_linux_arm64.tar.gz",
+      "checksum": "929BD163DB2D7CD2255D3BCB8967208079813D7B46B0C952F7B794D8E2C7D304",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
