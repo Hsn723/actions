@@ -5,6 +5,11 @@ inputs:
     description: "Path to policy file"
     required: false
     default: ""
+  lazy_install:
+    description: "Whether to enable lazy install"
+    required: false
+    type: boolean
+    default: true
 runs:
   using: composite
   steps:
@@ -15,7 +20,7 @@ runs:
   - uses: aquaproj/aqua-installer@96a9bc20066c5bf5e275b41019cfc165b25f4e2e # v4.0.5
     with:
       aqua_version: v2.61.0
-      aqua_opts: "-l -a"
+      aqua_opts: ${{ inputs.lazy_install && echo " -l" }} -a
       policy_allow: ${{ inputs.policy_allow }}
     env:
       GITHUB_TOKEN: ${{ github.token }}
