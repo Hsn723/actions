@@ -141,6 +141,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.57.2/syft_1.57.2_linux_amd64.tar.gz",
+      "checksum": "AD92BD3EC1B94A3DF01D4D0AEC199AFA9C42B72E86DA436FF5F837914D32706B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.57.2/syft_1.57.2_linux_arm64.tar.gz",
+      "checksum": "8EFE605309C98798E1EE0CFFDCF8C05CA26819B4CD44C0B03650F1E963E9BDB6",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -238,6 +248,16 @@
     {
       "id": "github_release/github.com/oras-project/oras/v1.3.6/oras_1.3.6_linux_arm64.tar.gz",
       "checksum": "B84269E78DFC2D5329A4AAB373DA3200DE95E6C138338CF6C66C10C0A3F248C1",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.4.0/oras_1.4.0_linux_amd64.tar.gz",
+      "checksum": "D8E1DCE2FD8CE996F1D901845B688EB0CF505A6082897606F053825BB47935D1",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.4.0/oras_1.4.0_linux_arm64.tar.gz",
+      "checksum": "0791FC200831563E498638D30E8EE8AAC20AD1DA2610760120FE3F770E12A8A4",
       "algorithm": "sha256"
     },
     {
@@ -553,6 +573,11 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.587.0/registry.yaml",
       "checksum": "729309DB5E7562072096CFB1EA4B8DE7A6DC41A9A9D57F2923784EEFD422F330",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.589.0/registry.yaml",
+      "checksum": "E785A69E1CEF8A92F09079E96B7156FA4515255FEE4D58C1E9DCDAB23D96DCA2",
       "algorithm": "sha256"
     }
   ]
