@@ -141,6 +141,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/anchore/syft/v1.57.2/syft_1.57.2_linux_amd64.tar.gz",
+      "checksum": "AD92BD3EC1B94A3DF01D4D0AEC199AFA9C42B72E86DA436FF5F837914D32706B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/anchore/syft/v1.57.2/syft_1.57.2_linux_arm64.tar.gz",
+      "checksum": "8EFE605309C98798E1EE0CFFDCF8C05CA26819B4CD44C0B03650F1E963E9BDB6",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/mikefarah/yq/v4.53.3/yq_linux_amd64",
       "checksum": "2148F058B3D9BE6348C7F261F504E53C52FFC4ADDCCC9659A82866E73BCA0AC62F9443D146932C547EFE54748700AC5A1633D9AFF01BA5605EEDDBF58FF880B5",
       "algorithm": "sha512"
@@ -241,6 +251,16 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/oras-project/oras/v1.4.0/oras_1.4.0_linux_amd64.tar.gz",
+      "checksum": "D8E1DCE2FD8CE996F1D901845B688EB0CF505A6082897606F053825BB47935D1",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/oras-project/oras/v1.4.0/oras_1.4.0_linux_arm64.tar.gz",
+      "checksum": "0791FC200831563E498638D30E8EE8AAC20AD1DA2610760120FE3F770E12A8A4",
+      "algorithm": "sha256"
+    },
+    {
       "id": "github_release/github.com/pre-commit/pre-commit/v4.6.0/pre-commit-4.6.0.pyz",
       "checksum": "EA8A0C84902E48C1875558F2F362ED8476773AA5FC8C16C5D8F2ACC2A2830A65",
       "algorithm": "sha256"
@@ -301,6 +321,26 @@
       "algorithm": "sha256"
     },
     {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.5/cosign-linux-amd64",
+      "checksum": "912502DEF4BAF810EAF36B210A4F51E1DA214F9F6D664E2A9A2154CFC67EE0D6",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.5/cosign-linux-arm64",
+      "checksum": "516893301E9EC0F2594EDFCF8F943EC3B3BA96F3AAD2B507EFF2B71E644E5FCA",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.6/cosign-linux-amd64",
+      "checksum": "318A99ADE4156A0C4113AA983B46C0A0830FA7896A096C63121EE47B610A94C6",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "github_release/github.com/sigstore/cosign/v3.1.6/cosign-linux-arm64",
+      "checksum": "BBB2EBC765F483CF9FAC42DA8763DDDC2B55B350EE12EA0C44A520A6D6D52334",
+      "algorithm": "sha256"
+    },
+    {
       "id": "http/get.helm.sh/helm-v4.2.3-linux-amd64.tar.gz",
       "checksum": "E9B88B4EE95B18C706839C28D3A0220E5BC470E9CD9262410C90793C45FF8B7C",
       "algorithm": "sha256"
@@ -338,6 +378,16 @@
     {
       "id": "http/get.helm.sh/helm-v4.3.1-linux-arm64.tar.gz",
       "checksum": "8CF8F66ECBC252AC8F7F06CCA68ABA88508DDFDE3A6A34FEB1678AD1694B4F88",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "http/get.helm.sh/helm-v4.3.2-linux-amd64.tar.gz",
+      "checksum": "D1C0278D46BEAB79582D7E50F5B3DC206944BA8E577CDE618513FD07DAA53983",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "http/get.helm.sh/helm-v4.3.2-linux-arm64.tar.gz",
+      "checksum": "DF31CB61680EF728F82C770E5280DD565617BEE6B039D37E85C677288BE4BBB0",
       "algorithm": "sha256"
     },
     {
@@ -528,6 +578,46 @@
     {
       "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.583.0/registry.yaml",
       "checksum": "4DF93DAEA98288B1C20AFA5AA9559CD09E6311C82D5FEBB6081B0D7F5F57A3EF",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.584.0/registry.yaml",
+      "checksum": "2850916D8E46BCB75075F4CCE621C713C4BC8EDEF33D616E84426F428BBB6EA8",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.585.0/registry.yaml",
+      "checksum": "0FB3F31B7AF2CFF8BC0B7971133448060B47FA0DACF320EB4300B081917C4D35",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.587.0/registry.yaml",
+      "checksum": "729309DB5E7562072096CFB1EA4B8DE7A6DC41A9A9D57F2923784EEFD422F330",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.589.0/registry.yaml",
+      "checksum": "E785A69E1CEF8A92F09079E96B7156FA4515255FEE4D58C1E9DCDAB23D96DCA2",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.591.0/registry.yaml",
+      "checksum": "6224AE00F7A355FBD542BCCEFAC3133B25B9A5868E601DE47065E02B1937F81B",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.592.0/registry.yaml",
+      "checksum": "2B0B50801B481DF187682B8E6DF4CEF1F382B62A44602EEAC146EB5E77122D09",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.593.0/registry.yaml",
+      "checksum": "761D91F165038484891F74F0C4DFDFCA4C1A3523A0C4995455FEB4E9C6F2B908",
+      "algorithm": "sha256"
+    },
+    {
+      "id": "registries/github_content/github.com/aquaproj/aqua-registry/v4.594.0/registry.yaml",
+      "checksum": "95FD865CF0477121F0C95AF5E9FD94181BE1F57473F4DE126CB427D620659A39",
       "algorithm": "sha256"
     }
   ]
