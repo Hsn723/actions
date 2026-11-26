@@ -9,11 +9,11 @@ checksum:
   - linux
 registries:
 - type: standard
-  ref: v4.593.0 # renovate: depName=aquaproj/aqua-registry
+  ref: v4.594.0 # renovate: depName=aquaproj/aqua-registry
 packages:
 - name: anchore/syft@v1.57.2
 - name: oras-project/oras@v1.4.0
-- name: sigstore/cosign@v3.1.5
+- name: sigstore/cosign@v3.1.6
 - name: helm/helm@v4.3.2
 - name: mikefarah/yq@v4.54.3
 - name: GoogleContainerTools/container-structure-test@v1.22.1
